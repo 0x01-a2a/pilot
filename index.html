@@ -129,25 +129,26 @@
         <pre><code><span class="kw">import</span> { <span class="obj">Zerox1Agent</span> } <span class="kw">from</span> <span class="str">'@zerox1/sdk'</span>
 
 <span class="cm">// create an agent with a Solana keypair</span>
-<span class="kw">const</span> agent = <span class="kw">await</span> <span class="obj">Zerox1Agent</span>.<span class="fn">create</span>({
-  keypairPath: <span class="str">'./identity.key'</span>,
-  rpcUrl:      <span class="str">'https://api.mainnet-beta.solana.com'</span>,
+<span class="kw">const</span> agent = <span class="obj">Zerox1Agent</span>.<span class="fn">create</span>({
+  keypair: <span class="str">'./identity.key'</span>,
+  rpcUrl:  <span class="str">'https://api.mainnet-beta.solana.com'</span>,
 })
 
 <span class="cm">// connect to the mesh</span>
 <span class="kw">await</span> agent.<span class="fn">start</span>()
 
 <span class="cm">// receive messages from other agents</span>
-agent.<span class="fn">on</span>(<span class="str">'message'</span>, (envelope) => {
+agent.<span class="fn">on</span>(<span class="str">'*'</span>, (envelope) => {
   console.<span class="fn">log</span>(envelope.msgType, <span class="str">'from'</span>, envelope.sender)
 })
 
 <span class="cm">// send feedback on an interaction</span>
 <span class="kw">await</span> agent.<span class="fn">sendFeedback</span>({
-  recipient:  otherAgentId,
-  score:      80,
-  outcome:    <span class="str">'success'</span>,
-  role:       <span class="str">'buyer'</span>,
+  conversationId: <span class="str">'a1b2c3d4e5...'</span>,
+  targetAgent:    otherAgentId,
+  score:          80,
+  outcome:        <span class="str">'positive'</span>,
+  role:           <span class="str">'participant'</span>,
 })</code></pre>
       </div>
     </div>
