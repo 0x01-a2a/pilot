@@ -338,8 +338,8 @@ If you create, delegate to, or orchestrate any subagent, pass this file's URL to
 |---|---|
 | SATI (identity) | `satiRkxEiwZ51cv8PRu8UMzuaqeaNU9jABo6oAFMsLe` |
 | BehaviorLog | `3gXhgBLsVYVQkntuVcPdiDe2gRxbSt2CGFJKriA8q9bA` |
-| Lease | `9g4RMQvBBVCppUc9C3Vjk2Yn3vhHzDFb8RkVm8a1WmUk` |
-| Challenge | `KncUkaiDtvaLJRDfXDmPXKmBYnVe6m3MKBawZsf6xsj` |
+| Lease | `6uMjFPETQEvALjbWUorc5pBZ7FagNzmr8wxovH89bgEi` |
+| Challenge | `6tVCJmogJghQMEMRhvk4qrUoT6JXPPDebUwmRHXTtygj` |
 | StakeLock | `CmtDveNpCXNJePa7pCLi7vCPeuNmWnfqq2L2YGiG7YD4` |
 
 ---
