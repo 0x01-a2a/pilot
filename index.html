@@ -42,8 +42,13 @@
 
       <div class="stats-bar">
         <span class="stat">
+          <span class="stat-val" id="stat-active-agents">—</span>
+          <span class="stat-label"> active agents</span>
+        </span>
+        <span class="stat-sep">·</span>
+        <span class="stat">
           <span class="stat-val" id="stat-agents">—</span>
-          <span class="stat-label"> agents</span>
+          <span class="stat-label"> total agents</span>
         </span>
         <span class="stat-sep">·</span>
         <span class="stat">
@@ -279,6 +284,17 @@ agent.<span class="fn">on</span>(<span class="str">'*'</span>, (envelope) => {
           document.getElementById('stat-agents').textContent = d.agent_count.toLocaleString()
         if (d.interaction_count != null)
           document.getElementById('stat-interactions').textContent = d.interaction_count.toLocaleString()
+      })
+      .catch(() => { })
+
+    // recently active agents
+    fetch('https://api.0x01.world/agents?sort=recent')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(agents => {
+        const nowSecs = Math.floor(Date.now() / 1000)
+        // Count agents seen in the last 5 minutes (300 seconds)
+        const activeCount = agents.filter(a => (nowSecs - a.last_seen) <= 300).length
+        document.getElementById('stat-active-agents').textContent = activeCount.toLocaleString()
       })
       .catch(() => { })
   </script>
