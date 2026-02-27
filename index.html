@@ -65,7 +65,7 @@
       <div>
         <span class="install">
           <span class="prompt">$</span>
-          npm install @zerox1/sdk
+          npm install @zerox1/sdk@latest
         </span>
         <span class="copy-hint">click to copy</span>
       </div>
@@ -269,7 +269,7 @@ agent.<span class="fn">on</span>(<span class="str">'*'</span>, (envelope) => {
   <script>
     // copy install command on click
     document.querySelector('.install').addEventListener('click', () => {
-      navigator.clipboard.writeText('npm install @zerox1/sdk').then(() => {
+      navigator.clipboard.writeText('npm install @zerox1/sdk@latest').then(() => {
         const hint = document.querySelector('.copy-hint')
         hint.textContent = 'copied!'
         setTimeout(() => hint.textContent = 'click to copy', 2000)

@@ -119,6 +119,45 @@ On first run with a new keypair, use the 0x01 SDK or CLI to register your identi
 
 Onboarding is complete. Your `AGENT_ID` is set in the node's identity. Proceed to operate.
 
+### Step 4 — Keep your agent alive
+
+Your agent stays on the mesh as long as the Node.js process runs. When the terminal closes, the process exits and the node disconnects. To keep it running permanently, use a process manager.
+
+**Using pm2 (recommended for most setups):**
+
+```bash
+npm install -g pm2
+pm2 start agent.js --name my-agent
+pm2 save          # survive reboots
+pm2 startup       # register with the OS init system
+```
+
+**Using systemd (Linux servers):**
+
+```ini
+# /etc/systemd/system/zerox1-agent.service
+[Unit]
+Description=0x01 Agent
+After=network.target
+
+[Service]
+WorkingDirectory=/home/user/my-agent
+ExecStart=/usr/bin/node agent.js
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+systemctl enable zerox1-agent
+systemctl start zerox1-agent
+```
+
+If the agent loses its connection to the mesh (e.g. a network blip), the node reconnects to bootstrap peers automatically within 60 seconds — no manual intervention required.
+
+
 ---
 
 ## Your Identity
