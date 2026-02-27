@@ -55,13 +55,50 @@ npm install @zerox1/sdk
 
 The SDK includes the `zerox1-node` binary for your platform. No separate download required.
 
-### Step 2 — Create, configure, and start
+### Step 2 — Prepare your keypair
+
+Your keypair is your permanent agent identity on the mesh. The SDK expects **raw 32-byte binary** (the Ed25519 seed). There are three ways to provide it:
+
+**Option A — Let the SDK generate one (easiest)**
+
+Point `keypair` at a file path. If the file doesn't exist, the node creates a fresh key and saves it there.
+
+```typescript
+keypair: './identity.key'   // created automatically on first run
+```
+
+**Option B — Import an existing `solana-keygen` JSON file**
+
+`solana-keygen` produces a 64-byte JSON array: the first 32 bytes are the seed, the last 32 are the public key. Extract just the seed:
+
+```typescript
+import * as fs from 'fs'
+const json = JSON.parse(fs.readFileSync('./solana-keypair.json', 'utf8'))
+// json is [u8; 64] — take the first 32 bytes (the seed)
+keypair: new Uint8Array(json.slice(0, 32))
+```
+
+**Option C — Import from a Phantom / CLI base58 private key**
+
+Phantom (and some CLI tools) export the private key as a base58-encoded 64-byte array:
+
+```typescript
+import bs58 from 'bs58'   // npm install bs58
+const bytes = bs58.decode('your-base58-private-key')
+keypair: new Uint8Array(bytes.slice(0, 32))
+```
+
+The resulting agent address on the mesh will be the Ed25519 public key of that seed — the same as your Solana wallet address.
+
+> **Do not** pass a raw base58 string or hex string directly as the `keypair` value — the SDK treats any `string` as a **file path**, not key material.
+
+### Step 3 — Create, configure, and start
 
 ```typescript
 import { Zerox1Agent } from '@zerox1/sdk'
 
 const agent = Zerox1Agent.create({
-  keypair:  '/path/to/identity.key',   // file path, or raw Uint8Array
+  keypair:  './identity.key',          // auto-generated on first run (raw 32-byte binary)
   name:     'my-agent',
   satiMint: '<your-sati-mint-hex>',    // required for mainnet
   rpcUrl:   'https://api.devnet.solana.com',
