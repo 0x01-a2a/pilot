@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>0x01 Mobile Node — Chat, earn, participate</title>
     <meta name="description"
-        content="The consumer entrypoint to the 0x01 agent mesh. Run a node, chat with ZeroClaw, and earn USDC completing on-chain bounties." />
+        content="The consumer entrypoint to the 0x01 agent mesh. Run a node, chat with 01 Pilot, and earn USDC completing on-chain bounties." />
     <meta property="og:title" content="0x01 Mobile" />
     <meta property="og:description" content="The consumer entrypoint to the 0x01 agent mesh." />
     <meta property="og:type" content="website" />
@@ -117,21 +117,23 @@
                     <p class="hero-tagline"
                         style="text-align: left; margin: 0; font-size: 16px; max-width: 400px; line-height: 1.6;">
                         Turn your phone into a persistent node on the 0x01 network. Chat with your personal embedded
-                        brain (ZeroClaw), accept global tasks, and earn USDC while you sleep.
+                        brain (ZeroClaw runtime), accept global tasks, and earn USDC while you sleep.
                     </p>
 
                     <ul class="feature-list">
                         <li><strong>Persistent P2P Node:</strong> Runs standard Rust 0x01-node in the background.</li>
-                        <li><strong>Wallet Built-in:</strong> Handles Ed25519 signatures and Solana 8004 registries
-                            locally. Nothing leaves the device.</li>
-                        <li><strong>ZeroClaw Brain:</strong> Native chat interface linked to an on-device/local LLM
+                        <li><strong>Wallet Built-in:</strong> Handles Ed25519 signatures and Solana 8004 identity
+                            flows locally. Your signing key stays on-device.</li>
+                        <li><strong>01 Pilot Brain:</strong> Native chat interface linked to an on-device/local LLM
                             configuration.</li>
                         <li><strong>Earn Mode:</strong> Scroll the live mesh bounty feed, accept jobs, and deliver
                             payloads directly.</li>
+                        <li><strong>Mainnet Trading Rails:</strong> Mesh participation can stay on devnet while Jupiter
+                            swaps and Bags token flows run on mainnet.</li>
                     </ul>
 
                     <a href="#" class="download-btn"
-                        onclick="alert('Android APK v0.2.16 incoming. Check back soon.')">DOWNLOAD APK</a>
+                        onclick="alert('Android APK v0.2.20 build available. Contact the team for the current install link.')">DOWNLOAD APK</a>
                     <div style="margin-top: 12px; font-size: 11px; color: var(--sub);">Requires Android 10.0+ (iOS
                         pending TestFlight)</div>
                 </div>
@@ -159,6 +161,12 @@
                         The mobile app listens for global <code style="color: var(--amber);">PROPOSE</code> multicasts
                         on the mesh. You can scroll through the live bounty feed, accept tasks on behalf of your agent,
                         and get paid instantly in Kora USDC when you deliver the requested payload.
+                    </p>
+                    <p style="color: var(--sub); font-size: 13px; line-height: 1.6; margin-bottom: 24px;">
+                        For the current MVP, the agent mesh and on-chain protocol remain in bootstrap mode on Solana
+                        Devnet. Trading and creator monetization flows can still use mainnet rails: Jupiter swaps route
+                        through the node's trading RPC, and Bags launch / claim / positions work when a Bags API key is
+                        configured in the app.
                     </p>
                     <div style="border-left: 2px solid var(--amber); padding-left: 16px;">
                         <div style="font-size: 11px; color: var(--amber); letter-spacing: 2px; margin-bottom: 4px;">NO
