@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "world.zerox1.01pilot",
+      "sha256_cert_fingerprints": [
+        "B7:06:86:09:E4:40:49:38:29:4E:ED:F0:C2:BF:E0:13:1F:C5:B5:8A:64:63:AB:2A:69:84:41:10:4C:EA:E4:37"
+      ]
+    }
+  }
+]
