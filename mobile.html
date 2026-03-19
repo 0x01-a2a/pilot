@@ -678,12 +678,12 @@
             const hero   = document.getElementById('mobile-hero')
             const ctx    = canvas.getContext('2d')
             const isMobile = window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent)
-            const N_TOWERS = isMobile ? 5 : 8
-            const MAX_R    = isMobile ? 180 : 240  // max arc radius
+            const N_TOWERS = isMobile ? 22 : 38
+            const MAX_R    = isMobile ? 220 : 300  // max arc radius — large enough to overlap neighbours
             const N_ARCS   = 3                      // arcs per pulse
             const ARC_GAP  = 38                     // px between arcs
             const PULSE_DUR = 2800                  // ms for one pulse to expand fully
-            const MOUSE_R   = 130
+            const MOUSE_R   = 210
 
             let W, H, DPR, towers, pulses
             let mouse = { x: -9999, y: -9999 }
@@ -748,9 +748,9 @@
                 }
             }
 
-            function drawTowerBase(x, y, lit) {
+            function drawTowerBase(x, y, lit, mBoost = 0) {
                 // cell tower silhouette: tapered mast + crossbars + antenna nub
-                const a  = lit ? .55 : .18
+                const a  = Math.min(.9, (lit ? .55 : .18) + mBoost * .55)
                 const c  = `rgba(30,160,90,${a})`
                 ctx.strokeStyle = c
                 ctx.fillStyle   = c
@@ -806,21 +806,24 @@
                 for (const t of towers) {
                     // how far into the current pulse cycle are we?
                     const cycle = ((ts + t.offset) % t.interval) / t.interval
-                    const lit   = cycle < .65
 
-                    // mouse proximity boosts brightness
+                    // mouse/touch proximity — sharp falloff like index.html hex grid
                     const dx = t.x - mouse.x, dy = t.y - mouse.y
                     const md  = Math.sqrt(dx * dx + dy * dy)
-                    const mBoost = md < MOUSE_R ? (1 - md / MOUSE_R) * .5 : 0
+                    const mBoost = md < MOUSE_R ? Math.pow(1 - md / MOUSE_R, 1.4) : 0
 
-                    const alpha = .55 + mBoost
+                    const lit   = cycle < .65 || mBoost > .15
+                    const alpha = Math.min(1.05, .42 + mBoost * 1.1)
+
                     drawArcSet(t.x, t.y, cycle, alpha)
-                    drawTowerBase(t.x, t.y, lit)
 
-                    // mouse hover: trigger an extra fast pulse from nearby tower
-                    if (mBoost > .3 && cycle > .8) {
-                        drawArcSet(t.x, t.y, ((ts * 1.6) % t.interval) / t.interval, mBoost * .8)
+                    // when mouse is close, draw a second fast-moving pulse on top
+                    if (mBoost > .18) {
+                        const fastCycle = ((ts * 1.7 + t.offset) % t.interval) / t.interval
+                        drawArcSet(t.x, t.y, fastCycle, mBoost * .75)
                     }
+
+                    drawTowerBase(t.x, t.y, lit, mBoost)
                 }
 
                 requestAnimationFrame(frame)
@@ -831,10 +834,27 @@
                 mouse.x = cx - r.left; mouse.y = cy - r.top
             }
 
-            hero.addEventListener('mousemove',  e => trackPointer(e.clientX, e.clientY))
-            hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999 })
-            hero.addEventListener('touchmove',  e => { const t = e.touches[0]; trackPointer(t.clientX, t.clientY) }, { passive: true })
-            hero.addEventListener('touchend',   () => { mouse.x = -9999; mouse.y = -9999 })
+            // click / tap → immediate fresh pulse from nearest tower
+            function triggerNearest(cx, cy) {
+                const r  = canvas.getBoundingClientRect()
+                const px = cx - r.left, py = cy - r.top
+                let best = null, bestD = Infinity
+                for (const t of towers) {
+                    const d = Math.hypot(t.x - px, t.y - py)
+                    if (d < bestD) { bestD = d; best = t }
+                }
+                if (best) {
+                    // snap offset so cycle restarts from 0 right now
+                    best.offset = -(performance.now() % best.interval)
+                }
+            }
+
+            hero.addEventListener('mousemove',   e => trackPointer(e.clientX, e.clientY))
+            hero.addEventListener('mouseleave',  () => { mouse.x = -9999; mouse.y = -9999 })
+            hero.addEventListener('click',       e => triggerNearest(e.clientX, e.clientY))
+            hero.addEventListener('touchmove',   e => { const t = e.touches[0]; trackPointer(t.clientX, t.clientY) }, { passive: true })
+            hero.addEventListener('touchstart',  e => { const t = e.touches[0]; trackPointer(t.clientX, t.clientY); triggerNearest(t.clientX, t.clientY) }, { passive: true })
+            hero.addEventListener('touchend',    () => { mouse.x = -9999; mouse.y = -9999 })
 
             resize()
             requestAnimationFrame(frame)
