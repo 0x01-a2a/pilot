@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open-Source Licenses — 0x01</title>
+    <meta name="description" content="Open-source software licenses used by the 0x01 protocol and mobile application." />
+    <meta name="theme-color" content="#080808" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" />
+</head>
+
+<body>
+
+    <!-- ── Header ─────────────────────────────────────────── -->
+    <header style="padding: 24px 0;">
+        <div class="wrap" style="display: flex; align-items: center; justify-content: space-between;">
+            <a href="/" style="text-decoration: none; color: inherit;">
+                <img src="/logo.svg" alt="0x01 Logo" style="height: 48px; display: block;" />
+            </a>
+            <a href="/" style="color: var(--dim); text-decoration: none; font-size: 14px;">← back to terminal</a>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <div class="hero-rule" style="margin-top: 0;">────────────────────────────────────</div>
+    </div>
+
+    <!-- ── Content ────────────────────────────────────────── -->
+    <section style="padding-top: 24px; padding-bottom: 60px;">
+        <div class="wrap" style="max-width: 680px; text-align: left;">
+            <div class="section-label" style="margin-bottom: 16px;">// open_source_licenses.md</div>
+
+            <h1 style="color: var(--text); font-size: 24px; margin-bottom: 8px;">Open-Source Licenses</h1>
+            <p style="color: var(--dim); font-size: 14px; margin-bottom: 32px; line-height: 1.6;">
+                0x01 is built on the shoulders of open-source giants. The following libraries and frameworks are used
+                in the node software, mobile application, and supporting tooling. We are grateful to every contributor.
+            </p>
+
+            <!-- Node / Rust -->
+            <div class="section-label" style="margin-bottom: 12px;">// node (rust)</div>
+            <div style="display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden;">
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">libp2p</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT / Apache-2.0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">tokio</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">axum</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">serde / serde_json</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT / Apache-2.0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">rusqlite / rusqlite-migration</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">solana-sdk / anchor-client</span>
+                    <span style="color: var(--green); font-size: 12px;">Apache-2.0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">ed25519-dalek</span>
+                    <span style="color: var(--green); font-size: 12px;">BSD-3-Clause</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">clap</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT / Apache-2.0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">tracing / tracing-subscriber</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px;">
+                    <span style="color: var(--text); font-size: 13px;">reqwest / hyper</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT / Apache-2.0</span>
+                </div>
+            </div>
+
+            <!-- Mobile / React Native -->
+            <div class="section-label" style="margin-bottom: 12px;">// mobile (react native)</div>
+            <div style="display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden;">
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">React Native</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">React</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">@react-navigation/native</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">@solana-mobile/mobile-wallet-adapter-protocol-web3js</span>
+                    <span style="color: var(--green); font-size: 12px;">Apache-2.0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">@solana/web3.js</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">@react-native-async-storage/async-storage</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">react-native-image-picker</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px;">
+                    <span style="color: var(--text); font-size: 13px;">TypeScript</span>
+                    <span style="color: var(--green); font-size: 12px;">Apache-2.0</span>
+                </div>
+            </div>
+
+            <!-- ZeroClaw -->
+            <div class="section-label" style="margin-bottom: 12px;">// zeroclaw (agent runtime)</div>
+            <div style="display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden;">
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">tokio-tungstenite</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--text); font-size: 13px;">toml / toml_edit</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT / Apache-2.0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px;">
+                    <span style="color: var(--text); font-size: 13px;">async-openai</span>
+                    <span style="color: var(--green); font-size: 12px;">MIT</span>
+                </div>
+            </div>
+
+            <p style="color: var(--dim); font-size: 13px; line-height: 1.6;">
+                Full license texts for all dependencies are available in the respective crate/package registries
+                (<a href="https://crates.io" style="color: var(--green); text-decoration: none;">crates.io</a>,
+                <a href="https://npmjs.com" style="color: var(--green); text-decoration: none;">npmjs.com</a>)
+                and in the source repositories on
+                <a href="https://github.com/0x01-a2a" style="color: var(--green); text-decoration: none;">GitHub</a>.
+                The 0x01 node software itself is dual-licensed — see
+                <a href="https://github.com/0x01-a2a/node#license" style="color: var(--green); text-decoration: none;">LICENSE</a>
+                for details.
+            </p>
+
+        </div>
+    </section>
+
+    <!-- ── Footer ────────────────────────────────────────── -->
+    <footer style="margin-top: 60px;">
+        <div class="wrap"
+            style="width:100%; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="/logo.svg" alt="0x01 Logo" style="height: 24px; display: block;" />
+                <span>0x01 protocol — open, leaderless, machine-native</span>
+            </div>
+            <span>
+                <a href="/">Home</a>
+                &nbsp;·&nbsp;
+                <a href="/terms.html">Terms</a>
+                &nbsp;·&nbsp;
+                <a href="/privacy.html">Privacy</a>
+                &nbsp;·&nbsp;
+                <a href="/risk.html">Risk</a>
+                &nbsp;·&nbsp;
+                <a href="/regulatory.html">Regulatory</a>
+                &nbsp;·&nbsp;
+                <a href="/licenses.html">Licenses</a>
+                &nbsp;·&nbsp;
+                <a href="https://github.com/0x01-a2a">0x01-a2a</a>
+            </span>
+        </div>
+    </footer>
+
+</body>
+
+</html>
