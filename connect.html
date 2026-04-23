@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Connect Wallet — 01 Pilot</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      min-height: 100vh;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--bright);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: var(--sub);
+      margin-bottom: 36px;
+      text-align: center;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 340px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+
+    .wallet-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      font-family: var(--mono);
+      color: var(--bright);
+      width: 100%;
+      text-align: left;
+      transition: border-color 0.15s;
+    }
+
+    .wallet-btn:hover { border-color: var(--green); }
+    .wallet-btn:active { opacity: 0.75; }
+
+    .wallet-btn-label { display: flex; flex-direction: column; gap: 3px; }
+    .wallet-btn-name { font-size: 13px; font-weight: 600; color: var(--bright); }
+    .wallet-btn-hint { font-size: 10px; color: var(--sub); }
+    .wallet-btn-arrow { font-size: 14px; color: var(--dim); }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      color: var(--dim);
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .addr-input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--bright);
+      width: 100%;
+      outline: none;
+    }
+    .addr-input::placeholder { color: var(--dim); }
+    .addr-input:focus { border-color: var(--green); }
+
+    .save-btn {
+      background: var(--green);
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #000;
+      width: 100%;
+      cursor: pointer;
+    }
+    .save-btn:disabled { opacity: 0.4; cursor: default; }
+    .save-btn:active { opacity: 0.85; }
+
+    .status {
+      font-size: 11px;
+      text-align: center;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: none;
+    }
+    .status.ok  { color: var(--green); border-color: var(--green); }
+    .status.err { color: #ff5252;      border-color: #ff5252; }
+
+    .manual-toggle {
+      font-size: 11px;
+      color: var(--sub);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--mono);
+      text-decoration: underline;
+      text-align: center;
+      width: 100%;
+      padding: 4px;
+    }
+    .manual-toggle:hover { color: var(--text); }
+
+    #manual-section { display: none; flex-direction: column; gap: 10px; }
+  </style>
+</head>
+<body>
+  <div class="logo">01 PILOT</div>
+  <div class="subtitle">Link your personal wallet to your agent</div>
+
+  <div class="card">
+    <div class="card-title">Select wallet</div>
+
+    <button class="wallet-btn" id="phantom-btn">
+      <div class="wallet-btn-label">
+        <span class="wallet-btn-name">Phantom</span>
+        <span class="wallet-btn-hint">Solana · Most popular</span>
+      </div>
+      <span class="wallet-btn-arrow">↗</span>
+    </button>
+
+    <button class="wallet-btn" id="backpack-btn">
+      <div class="wallet-btn-label">
+        <span class="wallet-btn-name">Backpack</span>
+        <span class="wallet-btn-hint">Solana · xNFT wallet</span>
+      </div>
+      <span class="wallet-btn-arrow">↗</span>
+    </button>
+
+    <div class="divider">or</div>
+
+    <div id="manual-section">
+      <input
+        class="addr-input"
+        id="addr-input"
+        type="text"
+        placeholder="Paste your Solana address"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="none"
+        spellcheck="false"
+      >
+      <button class="save-btn" id="addr-submit">Save Address</button>
+    </div>
+
+    <button class="manual-toggle" id="manual-toggle">enter address manually</button>
+
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    // ── Minimal bs58 ──────────────────────────────────────────────────────────
+    const ALPHA58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+
+    function bs58Encode(bytes) {
+      let x = 0n;
+      for (const b of bytes) x = (x << 8n) | BigInt(b);
+      let out = '';
+      while (x > 0n) { out = ALPHA58[Number(x % 58n)] + out; x /= 58n; }
+      for (const b of bytes) { if (b !== 0) break; out = '1' + out; }
+      return out;
+    }
+
+    function bs58Decode(str) {
+      let x = 0n;
+      for (const c of str) {
+        const i = ALPHA58.indexOf(c);
+        if (i < 0) throw new Error('invalid bs58 char: ' + c);
+        x = x * 58n + BigInt(i);
+      }
+      const bytes = [];
+      while (x > 0n) { bytes.unshift(Number(x & 0xFFn)); x >>= 8n; }
+      for (const c of str) { if (c !== '1') break; bytes.unshift(0); }
+      return new Uint8Array(bytes);
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function getParams() {
+      const out = {};
+      for (const [k, v] of new URLSearchParams(window.location.search).entries()) out[k] = v;
+      return out;
+    }
+
+    function showStatus(msg, type) {
+      const el = document.getElementById('status');
+      el.textContent = msg;
+      el.className = 'status ' + (type || 'info');
+      el.style.display = 'block';
+    }
+
+    // ── LocalStorage keys (survive app switch) ────────────────────────────────
+    const LS_CB  = 'zerox1_wallet_callback';
+    const LS_SK  = 'zerox1_dapp_sk';
+
+    function finishWithAddress(address) {
+      const cb = localStorage.getItem(LS_CB);
+      localStorage.removeItem(LS_CB);
+      localStorage.removeItem(LS_SK);
+      if (!cb) { showStatus('Session expired — reopen from the app.', 'err'); return; }
+      window.location.href = cb + '?address=' + encodeURIComponent(address);
+    }
+
+    // ── Phantom / Backpack deeplink ───────────────────────────────────────────
+    const SELF    = window.location.origin + window.location.pathname;
+    const APP_URL = 'https://mobile.0x01.world';
+
+    function openWallet(base, stepParam) {
+      const kp = nacl.box.keyPair();
+      localStorage.setItem(LS_SK, btoa(String.fromCharCode(...kp.secretKey)));
+      const redirectLink = SELF + '?step=' + stepParam;
+      const url = base + '/connect?' + [
+        'app_url='                    + encodeURIComponent(APP_URL),
+        'dapp_encryption_public_key=' + encodeURIComponent(bs58Encode(kp.publicKey)),
+        'redirect_link='              + encodeURIComponent(redirectLink),
+        'cluster=mainnet-beta',
+      ].join('&');
+      window.location.href = url;
+    }
+
+    function handleWalletCallback() {
+      const p = getParams();
+      if (p.errorCode) { showStatus('Wallet rejected the connection.', 'err'); return; }
+      const skB64 = localStorage.getItem(LS_SK);
+      if (!skB64 || !p.phantom_encryption_public_key || !p.nonce || !p.data) {
+        showStatus('Invalid response — try again.', 'err'); return;
+      }
+      try {
+        const sk           = Uint8Array.from(atob(skB64), c => c.charCodeAt(0));
+        const phantomPub   = bs58Decode(p.phantom_encryption_public_key);
+        const sharedSecret = nacl.box.before(phantomPub, sk);
+        const decrypted    = nacl.box.open.after(
+          bs58Decode(p.data), bs58Decode(p.nonce), sharedSecret
+        );
+        if (!decrypted) { showStatus('Decryption failed — try again.', 'err'); return; }
+        const payload = JSON.parse(new TextDecoder().decode(decrypted));
+        showStatus('Connected! Returning to 01 Pilot\u2026', 'ok');
+        setTimeout(() => finishWithAddress(payload.public_key), 700);
+      } catch (e) {
+        showStatus('Error: ' + e.message, 'err');
+      }
+    }
+
+    // ── Manual address ────────────────────────────────────────────────────────
+    function isValidSolanaAddress(addr) {
+      try { return bs58Decode(addr.trim()).length === 32; } catch { return false; }
+    }
+
+    document.getElementById('addr-submit').addEventListener('click', () => {
+      const addr = document.getElementById('addr-input').value.trim();
+      if (!isValidSolanaAddress(addr)) {
+        showStatus('Invalid Solana address — check and try again.', 'err');
+        return;
+      }
+      finishWithAddress(addr);
+    });
+
+    document.getElementById('manual-toggle').addEventListener('click', () => {
+      const sec = document.getElementById('manual-section');
+      const visible = sec.style.display === 'flex';
+      sec.style.display = visible ? 'none' : 'flex';
+      document.getElementById('manual-toggle').textContent =
+        visible ? 'enter address manually' : 'hide manual entry';
+    });
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    const p = getParams();
+
+    if (p.callback) localStorage.setItem(LS_CB, p.callback);
+
+    if (p.step === 'phantom-cb') {
+      handleWalletCallback();
+    } else if (p.step === 'backpack-cb') {
+      handleWalletCallback();
+    } else {
+      document.getElementById('phantom-btn').addEventListener('click', () =>
+        openWallet('https://phantom.app/ul/v1', 'phantom-cb')
+      );
+      document.getElementById('backpack-btn').addEventListener('click', () =>
+        openWallet('https://backpack.app/ul/v1', 'backpack-cb')
+      );
+    }
+  </script>
+</body>
+</html>
