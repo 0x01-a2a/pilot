@@ -157,14 +157,6 @@
   <div class="card">
     <div class="card-title">Select wallet</div>
 
-    <button class="wallet-btn" id="phantom-btn">
-      <div class="wallet-btn-label">
-        <span class="wallet-btn-name">Phantom</span>
-        <span class="wallet-btn-hint">Solana · Most popular</span>
-      </div>
-      <span class="wallet-btn-arrow">↗</span>
-    </button>
-
     <button class="wallet-btn" id="backpack-btn">
       <div class="wallet-btn-label">
         <span class="wallet-btn-name">Backpack</span>
@@ -318,9 +310,6 @@
     } else if (p.step === 'backpack-cb') {
       handleWalletCallback();
     } else {
-      document.getElementById('phantom-btn').addEventListener('click', () =>
-        openWallet('https://phantom.app/ul/v1', 'phantom-cb')
-      );
       document.getElementById('backpack-btn').addEventListener('click', () =>
         openWallet('https://backpack.app/ul/v1', 'backpack-cb')
       );
